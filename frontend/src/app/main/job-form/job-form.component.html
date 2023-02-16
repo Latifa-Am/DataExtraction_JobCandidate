@@ -1,1 +1,17 @@
-<p>job-form works!</p>
+<div class="container">
+    <form [formGroup]="angForm" (ngSubmit)="submitApplication(angForm)" ngNativeValidate>
+        <input type="text" placeholder="First name" formControlName="firstName" required>
+
+        <input type="text" placeholder="Last name" formControlName="lastName" required>
+
+        <input type="email" placeholder="Email" formControlName="email" required>
+
+        <textarea placeholder="About you" formControlName="description"></textarea>
+
+        <div class="CVInput">
+            <input type="file" formControlName="resume">
+        </div>
+        
+        <button [disabled]="!angForm.valid">submit</button>
+    </form>
+</div>

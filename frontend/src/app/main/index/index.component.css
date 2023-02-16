@@ -131,3 +131,9 @@
       visibility: hidden;
     }
   }
+
+  .card-container button {
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: large;
+  }

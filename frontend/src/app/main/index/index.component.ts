@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent {
+  isHidden = true;
 
+  showForm() {
+    this.isHidden = !this.isHidden;
+  }
 }

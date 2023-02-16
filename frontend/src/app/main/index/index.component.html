@@ -10,12 +10,12 @@
     <h2>Apply Today</h2>
     <p>Click on apply, and start your journey with us!</p>
     <div class="card-container">    
-        <button class="card">
+        <button class="card" (click)="showForm()">
             <img src="https://img.icons8.com/ios/50/null/reviewer-male.png"/>
             Apply
-            <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
         </button>  
     </div>
     <!-- Job Form -->
-    <app-job-form></app-job-form>
+    <app-job-form [hidden]="isHidden"></app-job-form>
 </div>
