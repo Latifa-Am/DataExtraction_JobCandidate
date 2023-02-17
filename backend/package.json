@@ -1,0 +1,19 @@
+{
+  "name": "angular_nodejs_app",
+  "version": "1.0.0",
+  "description": "angular test rest api using nodejs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon ./server.js localhost 3000",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "LatifaAm",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
