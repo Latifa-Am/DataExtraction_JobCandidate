@@ -15,7 +15,7 @@ app.get('/candidate', (req, res) => {
 app.post('/candidate/add', (req, res) => {
   const candidate = req.body;
   candidates.push(candidate);
-  res.json(`Application added ${candidate}`);
+  res.json(`Application added`);
 });
 
 /*app.get('/', (req,res) => {

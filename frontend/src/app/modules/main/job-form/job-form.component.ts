@@ -1,20 +1,22 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
-import { CandidateAdapter } from 'src/app/adapters/candidate.adapter';
-import { Candidate } from 'src/app/models/Candidate.model';
+import { ToastrService } from 'ngx-toastr';
+
+import { CandidateAdapter } from 'src/app/shared/adapters/candidate.adapter';
 import { JobService } from 'src/app/services/job.service';
+//import { Candidate } from 'src/app/models/Candidate.model';
 
 @Component({
   selector: 'app-job-form',
   templateUrl: './job-form.component.html',
   styleUrls: ['./job-form.component.css']
 })
+
 export class JobFormComponent implements OnDestroy {
   angForm: FormGroup;
   destroy$: Subject<boolean> = new Subject<boolean>();
-  candidates: Candidate[] = [];
+  //candidates: Candidate[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -36,6 +38,7 @@ export class JobFormComponent implements OnDestroy {
     this.destroy$.unsubscribe();
   }
 
+  //Save a new Job Application
   submitApplication() {
     let candidate = [
       {
@@ -47,19 +50,21 @@ export class JobFormComponent implements OnDestroy {
     ].map((item: any) => this.adapter.adapt(item));
     this.jobService.addApplication(candidate[0]).pipe(takeUntil(this.destroy$)).subscribe(message => {
       console.log(message);
+      console.log(JSON.stringify(candidate[0], null, 2));
       this.showSuccess();
       this.angForm.reset();
     });
   }
 
-  getAllApplications() {
+  showSuccess() {
+      this.toastr.success('Submission successful, thank you.');
+  }
+
+  //Get all submissions
+  /*getAllApplications() {
     this.jobService.getAllApplications().pipe(takeUntil(this.destroy$)).subscribe((candidates: Candidate[]) => {
         this.candidates = candidates;
     });
-  }
-
-  showSuccess() {
-    this.toastr.success('Submission successful, thank you.');
-  }
+  }*/
 
 }

@@ -1,17 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Candidate } from '../models/Candidate.model';
 import { map, Observable } from 'rxjs';
-import { CandidateAdapter } from '../adapters/candidate.adapter';
+
+import { Candidate } from '../shared/models/Candidate.model';
+import { CandidateAdapter } from '../shared/adapters/candidate.adapter';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class JobService {
 
   rootURL = '/candidate';
 
   constructor(private http: HttpClient, private adapter: CandidateAdapter) { }
+
+  addApplication(candidate: Candidate): Observable<any>{
+    return this.http.post<Candidate>(this.rootURL+"/add", candidate);
+  }
 
   getAllApplications(): Observable<Candidate[]>{
     //return this.http.get(this.rootURL);
@@ -21,9 +27,4 @@ export class JobService {
     );
   }
 
-  addApplication(candidate: Candidate): Observable<any>{
-    return this.http.post<Candidate>(this.rootURL+"/add", candidate);
-  }
-
-  
 }
