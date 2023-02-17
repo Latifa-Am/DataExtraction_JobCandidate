@@ -2,6 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
+import { CandidateAdapter } from 'src/app/adapters/candidate.adapter';
+import { Candidate } from 'src/app/models/Candidate.model';
 import { JobService } from 'src/app/services/job.service';
 
 @Component({
@@ -12,11 +14,13 @@ import { JobService } from 'src/app/services/job.service';
 export class JobFormComponent implements OnDestroy {
   angForm: FormGroup;
   destroy$: Subject<boolean> = new Subject<boolean>();
+  candidates: Candidate[] = [];
 
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
-    private jobService: JobService
+    private jobService: JobService,
+    private adapter: CandidateAdapter
   ) {
     this.angForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -27,16 +31,30 @@ export class JobFormComponent implements OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   submitApplication() {
-    this.jobService.addApplication(this.angForm.value).pipe(takeUntil(this.destroy$)).subscribe(data => {
-      console.log('message::::', data);
-      console.log(this.angForm.value);
+    let candidate = [
+      {
+        "firstName":  this.angForm.value.firstName,
+        "lastName": this.angForm.value.lastName,
+        "email": this.angForm.value.email,
+        "description": this.angForm.value.description
+    }
+    ].map((item: any) => this.adapter.adapt(item));
+    this.jobService.addApplication(candidate[0]).pipe(takeUntil(this.destroy$)).subscribe(message => {
+      console.log(message);
       this.showSuccess();
       this.angForm.reset();
+    });
+  }
+
+  getAllApplications() {
+    this.jobService.getAllApplications().pipe(takeUntil(this.destroy$)).subscribe((candidates: Candidate[]) => {
+        this.candidates = candidates;
     });
   }
 
