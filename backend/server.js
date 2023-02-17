@@ -3,22 +3,27 @@ const app = express(),
       bodyParser = require("body-parser");
       port = 3000;
 
-const users = [];
+const candidates = [];
 
 app.use(bodyParser.json());
+app.use(express.static(process.cwd()+"../../frontend/dist/frontend/"));
 
 app.get('/candidate', (req, res) => {
-  res.json(users);
+  res.json(candidates);
 });
 
 app.post('/candidate', (req, res) => {
-  const user = req.body.user;
-  users.push(user);
+  const candidate = req.body.candidate;
+  candidates.push(candidate);
   res.json("Application added");
 });
 
-app.get('/', (req,res) => {
+/*app.get('/', (req,res) => {
     res.send('Welcome to the backend!!!');
+});*/
+
+app.get('/', (req,res) => {
+  res.sendFile(process.cwd()+"../../frontend/dist/frontend/index.html")
 });
 
 app.listen(port, () => {

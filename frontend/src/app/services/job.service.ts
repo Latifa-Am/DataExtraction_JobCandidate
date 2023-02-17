@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class JobServiceService {
+export class JobService {
 
   rootURL = '/candidate';
 
