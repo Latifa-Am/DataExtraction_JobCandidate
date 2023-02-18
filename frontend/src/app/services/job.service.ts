@@ -19,6 +19,10 @@ export class JobService {
     return this.http.post<Candidate>(this.rootURL+"/add", candidate);
   }
 
+  saveUploadedResume(resume: any): Observable<any>{
+    return this.http.post(this.rootURL+"/resume", resume);
+  }
+
   getAllApplications(): Observable<Candidate[]>{
     //return this.http.get(this.rootURL);
     return this.http.get(this.rootURL).pipe(

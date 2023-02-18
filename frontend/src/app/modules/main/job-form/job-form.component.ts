@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import { CandidateAdapter } from 'src/app/shared/adapters/candidate.adapter';
 import { JobService } from 'src/app/services/job.service';
+import { HttpClient } from '@angular/common/http';
 //import { Candidate } from 'src/app/models/Candidate.model';
 
 @Component({
@@ -18,11 +19,14 @@ export class JobFormComponent implements OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   //candidates: Candidate[] = [];
 
+  uploadedFiles!: Array<File>;
+
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
     private jobService: JobService,
-    private adapter: CandidateAdapter
+    private adapter: CandidateAdapter,
+    private http : HttpClient
   ) {
     this.angForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -48,6 +52,9 @@ export class JobFormComponent implements OnDestroy {
         "description": this.angForm.value.description
     }
     ].map((item: any) => this.adapter.adapt(item));
+    //save resume if uploaded
+    this.saveResume();
+    //save job application details
     this.jobService.addApplication(candidate[0]).pipe(takeUntil(this.destroy$)).subscribe(message => {
       console.log(message);
       console.log(JSON.stringify(candidate[0], null, 2));
@@ -66,5 +73,23 @@ export class JobFormComponent implements OnDestroy {
         this.candidates = candidates;
     });
   }*/
+
+  fileChange(element:any){
+    this.uploadedFiles = element.target.files;
+    //element.target.value = "";
+  }
+
+  saveResume() {
+    let formData = new FormData();
+    if(this.uploadedFiles?.length >0) {
+      for(var i = 0; i < this.uploadedFiles.length; i++) {
+        formData.append("uploads[]", this.uploadedFiles[i], this.uploadedFiles[i].name);
+      }
+      this.jobService.saveUploadedResume(formData)
+        .subscribe((response)=>{
+          console.log('Resume received');
+      });
+    }
+  }
 
 }

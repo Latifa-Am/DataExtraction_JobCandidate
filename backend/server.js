@@ -2,7 +2,9 @@ const express = require('express');
 const app = express(),
       bodyParser = require("body-parser");
       port = 3000;
-
+const multipart = require('connect-multiparty');
+const multipartMiddleware = multipart({ uploadDir: './uploads' });
+      
 const candidates = [];
 
 app.use(bodyParser.json());
@@ -30,6 +32,17 @@ app.get('/', (req,res) => {
   res.sendFile(process.cwd()+"../../frontend/dist/frontend/index.html")
 });
 
+app.use("/candidate/resume", function(request, response, next){
+  next();
+});
+
+app.post('/candidate/resume', multipartMiddleware, (req, res)=>{
+  res.json({'message':req.files});
+});
+
+app.use(function(err, req, res, next) {
+  res.json({'error':err.message})
+});
 
 app.listen(port, () => {
     console.log(`Server listening on the port::${port}`);

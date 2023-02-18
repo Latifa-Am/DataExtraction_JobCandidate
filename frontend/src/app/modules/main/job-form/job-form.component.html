@@ -9,7 +9,7 @@
         <textarea placeholder="About you" formControlName="description"></textarea>
 
         <div class="CVInput">
-            <input type="file" formControlName="resume">
+            <input (change)="fileChange($event)"  type="file" formControlName="resume">
         </div>
         
         <button [disabled]="!angForm.valid">submit</button>
